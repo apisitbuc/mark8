@@ -1,209 +1,155 @@
-import Head from 'next/head'
+import React from "react";
+import InfoIcon from "@material-ui/icons/Info";
+import { Box, Button, Container, Typography, Grid } from "@material-ui/core";
+import CSVReader from "react-csv-reader";
+import Table from "pages/components/table";
+import UpdateIcon from "@material-ui/icons/Update";
+import Mark8Models from "pages/Models/Mark8Models";
 
-export default function Home() {
+const papaparseOptions = {
+  header: true,
+  dynamicTyping: true,
+  skipEmptyLines: true,
+  transformHeader: (header) => header.toLowerCase().replace(/\W/g, "_"),
+};
+const Index = () => {
+  const [data, setData] = React.useState<Mark8Models[] | null>();
+  let arr = [];
+  const handleForce = (data: Mark8Models[], fileInfo: any) => {
+    data.map((res, i) => {
+      if (res.id) {
+        arr.push(res);
+      }
+    });
+    setData(arr);
+  };
   return (
-    <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Box color="white" bgcolor="#002240" height={56}>
+        <Container maxWidth="md">
+          <Typography component="div" align="center">
+            <Box textAlign="justify" fontSize={20} p={1.5}>
+              Mark8
+            </Box>
+          </Typography>
+        </Container>
+      </Box>
+      <Container maxWidth="md">
+        <Box
+          border={1}
+          borderColor="#e7e7e7"
+          boxSizing="border-box"
+          borderRadius={6}
+          mt={10}
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
-  )
-}
+          <Box p={2}>
+            <Typography component="div" align="center" noWrap>
+              <Box textAlign="justify" fontSize={20} p={1.5}>
+                Bulk Upload form{" "}
+                <InfoIcon color="primary" style={{ top: "5px" }} />
+              </Box>
+              <Box
+                textAlign="justify"
+                fontSize={16}
+                p={1.5}
+                style={{ color: "#0089FF" }}
+              >
+                You haven't upload any bulk data yet
+              </Box>
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          borderColor="#e7e7e7"
+          border={1}
+          boxSizing="border-box"
+          borderRadius={6}
+        >
+          <Box p={2}>
+            <Typography component="div">
+              <Box textAlign="justify" fontSize={20} p={1.5}>
+                Choose your an input medthod
+              </Box>
+              <Box p={1.5}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={9}>
+                    <Box
+                      borderColor="#e7e7e7"
+                      border={1}
+                      boxSizing="border-box"
+                      borderRadius={6}
+                      p={3}
+                      pl={5}
+                    >
+                      <Grid container spacing={3}>
+                        <Grid item xs={8} md={6}>
+                          <Box p={1}>
+                            <CSVReader
+                              onFileLoaded={handleForce}
+                              parserOptions={papaparseOptions}
+                            ></CSVReader>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={4} md={6}>
+                          <Typography variant="h6" component="h2">
+                            via CSV file
+                          </Typography>
+                          <Typography variant="subtitle1" component="h2">
+                            อัปเดตข้อมูลจากไฟล์ CSV
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Typography>
+          </Box>
+        </Box>
+        <Box mt={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={1} md={1}>
+              <Typography component="div" align="center" noWrap>
+                <Box
+                  bgcolor="#F3F5F8"
+                  style={{ width: "100%", height: "50px" }}
+                >
+                  <Typography variant="h6" component="h6">
+                    38
+                  </Typography>
+                </Box>
+              </Typography>
+            </Grid>
+            <Grid item xs={11} md={7}>
+              <Typography component="div">
+                <Box>
+                  <Typography variant="h6" component="h6">
+                    listings successfully and Ready to published
+                  </Typography>
+                </Box>
+              </Typography>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <Typography component="div">
+                <Button color="primary" startIcon={<UpdateIcon />} size="small">
+                  Update data
+                </Button>
+              </Typography>
+            </Grid>
+            <Grid item xs={6} md={2}>
+              <Typography component="div">
+                <Button startIcon={<UpdateIcon />} size="small">
+                  Published
+                </Button>
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+      <Box p={6}>
+        <Table {...data} />
+      </Box>
+    </>
+  );
+};
+export default Index;
