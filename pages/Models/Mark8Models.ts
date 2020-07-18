@@ -21,7 +21,7 @@ class Mark8Models {
   title: string;
   washing_machine: boolean;
   water_heater: boolean;
-
+  amenities: Amenities;
   constructor(json: any) {
     this.id = _.get(json, "id");
     this.condo_name_en = _.get(json, "condo_name_en");
@@ -44,7 +44,17 @@ class Mark8Models {
     this.refrigerator = _.get(json, "refrigerator");
     this.washing_machine = _.get(json, "washing_machine");
     this.water_heater = _.get(json, "water_heater");
+    this.amenities = _.get(json, "amenities");
   }
 }
 
 export default Mark8Models;
+
+class Amenities {
+  amenities_amount: number;
+  amenities_list: any[];
+  constructor(json: any) {
+    this.amenities_amount = _.get(json, "amenities_amount");
+    this.amenities_list = _.get(json, "amenities_list");
+  }
+}

@@ -15,12 +15,52 @@ const papaparseOptions = {
 const Index = () => {
   const [data, setData] = React.useState<Mark8Models[] | null>();
   let arr = [];
+  let arramenities: any[] = [];
   const handleForce = (data: Mark8Models[], fileInfo: any) => {
     data.map((res, i) => {
+      let amenities = [];
+      let t = 0;
       if (res.id) {
+        if (res.aircon) {
+          t = t + 1;
+          amenities.push(`แอร์`);
+        }
+        if (res.bath_tub) {
+          t = t + 1;
+          amenities.push(`อ่างอาบน้ำ`);
+        }
+        if (res.electric_stove) {
+          t = t + 1;
+          amenities.push(`เตาไฟฟ้า`);
+        }
+        if (res.furniture) {
+          t = t + 1;
+          amenities.push(`เฟอร์นิเจอร์`);
+        }
+        if (res.gas_stove) {
+          t = t + 1;
+          amenities.push(`เตาแก๊ส`);
+        }
+        if (res.refrigerator) {
+          t = t + 1;
+          amenities.push(`ตู้เย็น`);
+        }
+        if (res.washing_machine) {
+          t = t + 1;
+          amenities.push(`เครื่องซักผ้า`);
+        }
+        if (res.water_heater) {
+          t = t + 1;
+          amenities.push(`เครื่องทำน้ำอุ่น`);
+        }
+        res.amenities = {
+          amenities_amount: t,
+          amenities_list: amenities,
+        };
         arr.push(res);
       }
     });
+    console.log(arr);
     setData(arr);
   };
   return (

@@ -1,20 +1,29 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
+import {
+  Select,
+  Paper,
+  TableRow,
+  TableBody,
+  TableContainer,
+  Table,
+  TableHead,
+  TableCell,
+  TablePagination,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Divider,
+} from "@material-ui/core";
+
 import Mark8Models from "pages/Models/Mark8Models";
 import { Label } from "pages/components/label";
 import FontManager from "src/Manager/FontManager";
 import ColorManager from "src/Manager/ColorManager";
 import Chip from "@material-ui/core/Chip";
 import _ from "lodash";
-import { Box } from "@material-ui/core";
+
 interface Column {
   id:
     | "id"
@@ -133,6 +142,9 @@ function TableMark8(props: Mark8Models[]) {
   const [hoveroverflow, setHoveroverflow] = React.useState(false);
   const [hoveroverflowid, setHoveroverflowid] = React.useState();
   const [hoverid, setHoverid] = React.useState();
+  const [ddhover, setDdhover] = React.useState(false);
+  const [ddhoveid, setDdhoverid] = React.useState();
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -151,6 +163,10 @@ function TableMark8(props: Mark8Models[]) {
     setHoveroverflowid(id);
     setHoveroverflow(true);
   };
+  const OnMouseHoverDD = (id) => {
+    setDdhoverid(id);
+    setDdhover(true);
+  };
   return (
     <>
       <Paper className={classes.root}>
@@ -164,7 +180,13 @@ function TableMark8(props: Mark8Models[]) {
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
-                    {column.label}
+                    <Label
+                      fontSize={FontManager.default.subtitle}
+                      color={ColorManager.default.textHeader}
+                      thin
+                    >
+                      {column.label}
+                    </Label>
                   </TableCell>
                 ))}
               </TableRow>
@@ -257,6 +279,13 @@ function TableMark8(props: Mark8Models[]) {
                           {row.rent_price != undefined ? (
                             <Label fontSize={FontManager.default.remark} thin>
                               {row.rent_price}
+                              <Label
+                                fontSize={FontManager.default.remark}
+                                color={ColorManager.default.textHeader}
+                                thin
+                              >
+                                {`/month`}
+                              </Label>
                             </Label>
                           ) : (
                             <Label
@@ -485,8 +514,37 @@ function TableMark8(props: Mark8Models[]) {
                           component="th"
                           scope="row"
                           className={classes.tdOverflow}
+                          onMouseEnter={() => OnMouseHoverDD(row.id)}
+                          onMouseLeave={() => setDdhover(false)}
                         >
-                          {row.floor}
+                          <FormControl key={row.id}>
+                            <InputLabel id="demo-controlled-open-select-label">
+                              {row.amenities.amenities_amount}
+                            </InputLabel>
+                            {row.amenities.amenities_list.length > 0 ? (
+                              <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                              >
+                                <Box p={1.5}>
+                                  <Label
+                                    fontSize={FontManager.default.subtitle}
+                                    bold
+                                  >
+                                    {`Amenities`}
+                                  </Label>
+                                </Box>
+                                <Divider
+                                  style={{ backgroundColor: "#0089FF" }}
+                                />
+                                {row.amenities.amenities_list.map((res) => (
+                                  <>
+                                    <MenuItem>{res}</MenuItem>
+                                  </>
+                                ))}
+                              </Select>
+                            ) : undefined}
+                          </FormControl>
                         </TableCell>
                       </TableRow>
                     ))
