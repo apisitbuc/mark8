@@ -208,6 +208,7 @@ function TableMark8(props: Mark8Models[]) {
                           row.sale_price != undefined &&
                           row.bedroom >= 0 &&
                           row.bath >= 0 &&
+                          row.bath != undefined &&
                           row.size__sq_m_ >= 0 &&
                           row.floor >= 0 &&
                           row.title &&
@@ -321,7 +322,7 @@ function TableMark8(props: Mark8Models[]) {
                           scope="row"
                           className={classes.tdOverflow}
                         >
-                          {row.bedroom >= 0 ? (
+                          {row.bedroom >= 0 && row.bedroom != undefined ? (
                             <Label fontSize={FontManager.default.remark} thin>
                               {row.bedroom}
                             </Label>
@@ -340,7 +341,7 @@ function TableMark8(props: Mark8Models[]) {
                           scope="row"
                           className={classes.tdOverflow}
                         >
-                          {row.bath >= 0 ? (
+                          {row.bath >= 0 && row.bath != undefined ? (
                             <Label fontSize={FontManager.default.remark} thin>
                               {row.bath}
                             </Label>
